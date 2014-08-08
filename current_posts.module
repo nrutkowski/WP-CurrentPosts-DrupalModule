@@ -1,0 +1,96 @@
+<?php 
+
+/**
+ * @file
+ * A block module that displays recent blog posts from the NorthPoint Techbytes Wordpress blog.
+ */
+drupal_add_js('/drupal/themes/bartik/js/jquery-2.1.1.min.js', 'file');
+drupal_add_js(drupal_get_path('module', 'current_posts') .'/current_posts.js', 'file'); 
+ 
+function current_posts_help($path, $arg) {
+    switch ($path) {
+    case "admin/help#current_posts":
+      return '<p>' . t("Displays links to nodes created on this date") . '</p>';
+      break;
+    }
+}
+
+function current_posts_block_info() {
+  $blocks['current_posts'] = array(
+    // The name that will appear in the block list.
+    'info' => t('Current posts'),
+    // Default setting.
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  return $blocks;
+}
+
+/*$offset = 0;
+
+function get_contents($offset){
+$service_url = 'http://www.bootstrap.local/wordpress/wp-json/posts?filter[posts_per_page]=5&filter[offset]=' . $offset;
+    $curl = curl_init($service_url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $curl_response = curl_exec($curl);
+    if ($curl_response === false) {
+        $info = curl_getinfo($curl);
+        curl_close($curl);
+        die('error occured during curl exec. Additioanl info: ' . var_export($info));
+    }
+    curl_close($curl);
+    $decoded = json_decode($curl_response, TRUE);
+    if (isset($decoded->response->status) && $decoded->response->status == 'ERROR') {
+        die('error occured: ' . $decoded->response->errormessage);
+    }
+    
+    
+    return $decoded;
+
+}
+
+
+function current_posts_contents() {
+    return get_contents(0);
+}
+
+
+function current_posts_block_view($delta = '') {
+    $results = current_posts_contents();
+    $i = 0;
+    for ($i; $i <= count($results) - 1; $i++){
+        $items[] = array (
+            'data' => l($results[$i]['title'], $results[$i]['link'], array('attributes'=>array('target'=>'_blank'))),
+        );
+    }
+    
+    if (empty($items)) {
+          $block['content'] = t('No posts available.');
+        }
+        else {
+          // Pass data through theme function.
+          $block['content'] = theme('current_posts_template', array(
+            'items' => $items, 'title' => 'Worpress Posts'));
+        }
+        
+    return $block;
+}
+
+*/
+
+function current_posts_block_view($delta = '') {
+
+$block['content'] = theme('current_posts_template', array('title' => 'Worpress Posts'));
+
+return $block;
+}
+
+
+function current_posts_theme() {
+     return array(
+      'current_posts_template' => array(
+        'template' => 'block-current_posts',//this is file name of template file
+        'variables' => array('title' => NULL),
+        'path' => drupal_get_path('module', 'current_posts')// set a path of file 
+    ),
+ );
+}

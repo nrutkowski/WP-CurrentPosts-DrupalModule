@@ -1,0 +1,3 @@
+name = Current Posts 
+description = A block module that lists links to recent posts on the NorthPoint TechBytes Blog.
+core = 7.x
